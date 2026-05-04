@@ -1,0 +1,6 @@
+---
+pid: 37704
+cwd: |
+  C:\Users\frederic
+---
+PS C:\Users\frederic>
