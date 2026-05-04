@@ -7,6 +7,7 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 import streamlit as st
+from faster_whisper import WhisperModel
 from jiwer import wer
 from openai import OpenAI
 
@@ -52,6 +53,17 @@ def transcribe_with_groq(api_key: str, model_name: str, tmp_path: str) -> str:
     return str(response)
 
 
+@st.cache_resource(show_spinner=False)
+def load_local_whisper_model(model_size: str) -> WhisperModel:
+    return WhisperModel(model_size, device="cpu", compute_type="int8")
+
+
+def transcribe_with_local_faster_whisper(model_name: str, tmp_path: str) -> str:
+    model = load_local_whisper_model(model_name)
+    segments, _info = model.transcribe(tmp_path)
+    return " ".join(s.text.strip() for s in segments).strip()
+
+
 def run_transcription(spec: ModelSpec, tmp_path: str) -> Dict:
     start = time.perf_counter()
     transcript = ""
@@ -67,6 +79,8 @@ def run_transcription(spec: ModelSpec, tmp_path: str) -> Dict:
             if not key:
                 raise RuntimeError("Missing GROQ_API_KEY")
             transcript = transcribe_with_groq(key, spec.api_model_name, tmp_path)
+        elif spec.provider == "local":
+            transcript = transcribe_with_local_faster_whisper(spec.api_model_name, tmp_path)
         else:
             raise RuntimeError(f"Unsupported provider: {spec.provider}")
     except Exception as exc:
@@ -91,7 +105,8 @@ def main() -> None:
     )
 
     all_models = by_id()
-    default_selection = [MODEL_SPECS[0].id, MODEL_SPECS[1].id]
+    local_defaults = [m.id for m in MODEL_SPECS if m.provider == "local"][:2]
+    default_selection = local_defaults if local_defaults else [MODEL_SPECS[0].id]
     selected_ids = st.multiselect(
         "Choose models to compare",
         options=[m.id for m in MODEL_SPECS],

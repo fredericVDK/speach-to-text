@@ -13,6 +13,27 @@ class ModelSpec:
 
 MODEL_SPECS: List[ModelSpec] = [
     ModelSpec(
+        id="local_faster_whisper_tiny",
+        provider="local",
+        label="Local (free) - faster-whisper tiny",
+        api_model_name="tiny",
+        estimated_price_per_minute_usd=0.0,
+    ),
+    ModelSpec(
+        id="local_faster_whisper_base",
+        provider="local",
+        label="Local (free) - faster-whisper base",
+        api_model_name="base",
+        estimated_price_per_minute_usd=0.0,
+    ),
+    ModelSpec(
+        id="local_faster_whisper_small",
+        provider="local",
+        label="Local (free) - faster-whisper small",
+        api_model_name="small",
+        estimated_price_per_minute_usd=0.0,
+    ),
+    ModelSpec(
         id="openai_gpt4o_mini_transcribe",
         provider="openai",
         label="OpenAI - gpt-4o-mini-transcribe",

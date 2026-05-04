@@ -18,7 +18,7 @@ You can:
 pip install -r requirements.txt
 ```
 
-3. Configure API keys:
+3. (Optional) Configure API keys for paid providers:
 
 ```bash
 set OPENAI_API_KEY=your_openai_key
@@ -33,6 +33,7 @@ streamlit run app.py
 
 ## Supported providers (MVP)
 
+- Local free models via `faster-whisper` (`tiny`, `base`, `small`)
 - OpenAI (`gpt-4o-mini-transcribe`, `whisper-1`)
 - Groq (`whisper-large-v3`, `distil-whisper-large-v3-en`)
 
@@ -47,6 +48,7 @@ Update those values to match your billing contracts/current published pricing.
 
 - This MVP computes WER locally if you provide a reference transcript.
 - If no reference is provided, the app still compares runtime, transcript length, and cost.
+- Local models are free (no API key needed) but may run slower on smaller machines.
 
 ## Deploy on Railway
 
