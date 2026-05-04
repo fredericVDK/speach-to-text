@@ -47,3 +47,18 @@ Update those values to match your billing contracts/current published pricing.
 
 - This MVP computes WER locally if you provide a reference transcript.
 - If no reference is provided, the app still compares runtime, transcript length, and cost.
+
+## Deploy on Railway
+
+1. Push this repo to GitHub.
+2. In Railway, create a new project from the GitHub repo.
+3. Railway will install dependencies from `requirements.txt`.
+4. Start command is provided by `Procfile`:
+
+```bash
+web: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+```
+
+5. Add environment variables in Railway:
+   - `OPENAI_API_KEY`
+   - `GROQ_API_KEY`
